@@ -6,11 +6,11 @@
  * @s: the string
  * Return: the number of characters printed
  */
-int print_string(char* s)
+int print_string(char *s)
 {
-    int i;
+	unsigned long int i;
 
-    for (i = 0; s[i]; i++)
-        _putchar(s[i]);
-    return (i);
+	for (i = 0; s[i]; i++)
+		_putchar(s[i]);
+	return (i);
 }
