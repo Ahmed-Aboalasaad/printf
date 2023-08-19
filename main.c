@@ -1,6 +1,7 @@
 #include "main.h"
 #include <stdio.h>
 #include <limits.h>
+#include <stdlib.h>
 
 /**
  * main - Entry point
@@ -9,11 +10,11 @@
  */
 int main(void)
 {
-	int len1 = printf("%b\n", -13),
-	len2 = _printf("%b\n", -13);
+	int len1, len2;
 
+	len1 = printf("");
+	len2 = _printf("");
 	printf("%d, %d\n", len1, len2);
-
 	/*
 	* int len;
 	* int len2;
