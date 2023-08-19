@@ -9,8 +9,8 @@
  */
 int main(void)
 {
-	int len1 = printf("%i\n", 3.14),
-	len2 = _printf("%i\n", 3.14);
+	int len1 = printf("%b\n", -13),
+	len2 = _printf("%b\n", -13);
 
 	printf("%d, %d\n", len1, len2);
 

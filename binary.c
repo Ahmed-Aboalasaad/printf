@@ -3,23 +3,21 @@
 
 /**
 * print_binary - prints the given unsigned int in binary
-* it can be easier with a stack but we're not allowed
-* to use it yet
+* it prints negative numbers in 2's complement
 *
 * @n: the unsigned int number
 * Return: the number of characters printed
 */
 int print_binary(unsigned int n)
 {
-	unsigned int nCopy = n, digitCount = 0, digitCountCopy, i;
+	unsigned int nCopy = n, digitCount = 0, digitCountCopy;
 	char *binary;
 
-	/* find #digits in binary represenation */
+	/* find #digits needed for binary represenation */
 	while (nCopy > 0)
-	{
-		nCopy /= 2;
-		digitCount++;
-	}
+		nCopy /= 2, digitCount++;
+	if (n == 0)
+		digitCount = 1;
 
 	/* allocate an array to put 0/1 in it */
 	binary = malloc(sizeof(*binary) * digitCount + 1);
