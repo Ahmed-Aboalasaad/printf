@@ -10,10 +10,8 @@
  */
 int main(void)
 {
-	int len1, len2;
-
-	len1 = printf("");
-	len2 = _printf("");
+	int len1 = printf("%X\n", 56846),
+	len2 = _printf("%X\n", 56846);
 	printf("%d, %d\n", len1, len2);
 	/*
 	* int len;

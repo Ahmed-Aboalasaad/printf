@@ -36,11 +36,17 @@ int _printf(const char *format, ...)
 				printed += print_string(va_arg(args, char*));
 			/* integer placeholder */
 			else if (format[i + 1] == 'd' || format[i + 1] == 'i')
-				printed += print_integer(va_arg(args, int));
+				printed += print_int(va_arg(args, int));
 			else if (format[i + 1] == 'b') /* binary conversion */
 				printed += print_binary(va_arg(args, unsigned int));
 			else if (format[i + 1] == '%') /* a percentage character */
 				printed += _putchar('%');
+			else if (format[i + 1] == 'u')
+				printed += print_unsigned_int(va_arg(args, unsigned int));
+			else if (format[i + 1] == 'o')
+				printed += print_octal(va_arg(args, unsigned int));
+			else if (format[i + 1] == 'x' || format[i + 1] == 'X')
+				printed += print_hex(va_arg(args, unsigned int), format[i + 1] == 'X');
 			else
 				skip = 0;
 		}

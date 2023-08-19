@@ -23,12 +23,12 @@ int int_pow(int b, int p)
 }
 
 /**
- * print_integer - Prints a number
+ * print_int - Prints a number
  *
  * @n: the number to be printed
  * Return: the number of digits printed
  */
-int print_integer(int n)
+int print_int(int n)
 {
 	int nCopy = n, digitCount = 0, digitCountCopy, extraDigit = '#', printed = 0;
 
@@ -69,5 +69,57 @@ int print_integer(int n)
 		_putchar('0' + extraDigit);
 		printed++;
 	}
+	return (printed);
+}
+
+/**
+ * unsigned_int_pow - power function
+ * @b: base
+ * @p: power
+ *
+ * Return: the base to the power
+ */
+unsigned int unsigned_int_pow(unsigned int b, unsigned int p)
+{
+	int tmp = b;
+
+	if (p == 0)
+		return (1);
+	if (p == 1)
+		return (b);
+	while (p-- > 1)
+		b *= tmp;
+
+	return (b);
+}
+
+/**
+ * print_unsigned_int - prints an unsigned integer
+ *
+ * @n: the unsigned integer
+ * Return: the number of digits printed
+*/
+int print_unsigned_int(unsigned int n)
+{
+	unsigned int nCopy = n, digitCount = 0, digitCountCopy, printed = 0;
+
+	/* handle the zero case */
+	if (n == 0)
+	{
+		_putchar('0');
+		return (1);
+	}
+	/* count the digits */
+	for (; nCopy > 0; digitCount++)
+		nCopy /= 10;
+	/* print the number (the heart of this function) */
+	digitCountCopy = digitCount;
+	for (; digitCountCopy > 0; digitCountCopy--)
+	{
+		nCopy = n;
+		nCopy /= unsigned_int_pow(10, digitCountCopy - 1);
+		_putchar('0' + nCopy % 10);
+	}
+	printed += digitCount;
 	return (printed);
 }
