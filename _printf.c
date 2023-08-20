@@ -16,7 +16,8 @@ void flush(char *buffer)
 
 	for (i = 0; buffer[i]; i++)
 		size++;
-	write(STDOUT_FILENO, buffer, size);
+	if (size != 0)
+		write(STDOUT_FILENO, buffer, size);
 	buffer[0] = '\0';
 }
 
