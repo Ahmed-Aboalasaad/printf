@@ -13,6 +13,13 @@ int print_address(unsigned long int p, char *buffer)
 	unsigned long int pCopy = p, digitCount = 0, digitCountCopy;
 	char *address;
 
+	/* Input Validation */
+	if (p == 0)
+	{
+		print_string("(nil)", buffer);
+		return (5);
+	}
+
 	/* find #digits needed for octal represenation */
 	while (pCopy > 0)
 		pCopy /= 16, digitCount++;
