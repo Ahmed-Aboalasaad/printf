@@ -12,7 +12,11 @@
  */
 void flush(char *buffer)
 {
-	write(STDOUT_FILENO, buffer, 1024);
+	int i, size = 0;
+
+	for (i = 0; buffer[i]; i++)
+		size++;
+	write(STDOUT_FILENO, buffer, size);
 	buffer[0] = '\0';
 }
 
