@@ -28,7 +28,7 @@ int int_pow(int b, int p)
  * @n: the number to be printed
  * Return: the number of digits printed
  */
-int print_int(int n)
+int print_int(int n, char *buffer)
 {
 	int nCopy = n, digitCount = 0, digitCountCopy, extraDigit = '#', printed = 0;
 
@@ -42,13 +42,13 @@ int print_int(int n)
 	/* handle the zero case */
 	if (n == 0)
 	{
-		_putchar('0');
+		add_to_buffer('0', buffer);
 		return (1);
 	}
 	/* handle negative values */
 	if (n < 0)
 	{
-		_putchar('-');
+		add_to_buffer('-', buffer);
 		printed++, n = -n;
 		nCopy = n;
 	}
@@ -61,12 +61,12 @@ int print_int(int n)
 	{
 		nCopy = n;
 		nCopy /= int_pow(10, digitCountCopy - 1);
-		_putchar('0' + nCopy % 10);
+		add_to_buffer('0' + nCopy % 10, buffer);
 	}
 	printed += digitCount;
 	if (extraDigit != '#') /* if I saved a digit in my pocket before */
 	{
-		_putchar('0' + extraDigit);
+		add_to_buffer('0' + extraDigit, buffer);
 		printed++;
 	}
 	return (printed);
@@ -99,14 +99,14 @@ unsigned int unsigned_int_pow(unsigned int b, unsigned int p)
  * @n: the unsigned integer
  * Return: the number of digits printed
 */
-int print_unsigned_int(unsigned int n)
+int print_unsigned_int(unsigned int n, char *buffer)
 {
 	unsigned int nCopy = n, digitCount = 0, digitCountCopy, printed = 0;
 
 	/* handle the zero case */
 	if (n == 0)
 	{
-		_putchar('0');
+		add_to_buffer('0', buffer);
 		return (1);
 	}
 	/* count the digits */
@@ -118,7 +118,7 @@ int print_unsigned_int(unsigned int n)
 	{
 		nCopy = n;
 		nCopy /= unsigned_int_pow(10, digitCountCopy - 1);
-		_putchar('0' + nCopy % 10);
+		add_to_buffer('0' + nCopy % 10, buffer);
 	}
 	printed += digitCount;
 	return (printed);

@@ -7,7 +7,7 @@
  * @n: the unsigned int number
  * Return: number of digits printed
  */
-int print_octal(unsigned int n)
+int print_octal(unsigned int n, char *buffer)
 {
 	unsigned int nCopy = n, digitCount = 0, digitCountCopy;
 	char *octal;
@@ -21,10 +21,7 @@ int print_octal(unsigned int n)
 	/* allocate an array to store octal representation in it */
 	octal = malloc(sizeof(*octal) * digitCount + 1);
 	if (octal == NULL)
-	{
-		print_string("Failed to allocate memory for octal conversion");
 		return (0);
-	}
 	octal[digitCount] = '\0';
 
 	/* fill in the octal string from right to left */
@@ -34,7 +31,7 @@ int print_octal(unsigned int n)
 		n /= 8;
 	}
 
-	print_string(octal);
+	print_string(octal, buffer);
 	free(octal);
 	return (digitCount);
 }

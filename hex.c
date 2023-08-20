@@ -8,7 +8,7 @@
  * @capital: would you like to capitalize letters ?
  * Return: number of characters printed
  */
-int print_hex(unsigned int n, char capital)
+int print_hex(unsigned int n, char capital, char *buffer)
 {
 	unsigned int nCopy = n, digitCount = 0, digitCountCopy;
 	char *hex;
@@ -23,10 +23,7 @@ int print_hex(unsigned int n, char capital)
 	/* allocate an array to put 0/1 in it */
 	hex = malloc(sizeof(*hex) * digitCount + 1);
 	if (hex == NULL)
-	{
-		print_string("Failed to allocate memory for hex conversion");
 		return (0);
-	}
 	hex[digitCount] = '\0';
 
 	/* fill in the binary from right to left */
@@ -37,7 +34,7 @@ int print_hex(unsigned int n, char capital)
 		n /= 16;
 	}
 
-	print_string(hex);
+	print_string(hex, buffer);
 	free(hex);
 	return (digitCount);
 }

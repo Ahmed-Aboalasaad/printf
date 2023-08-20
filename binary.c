@@ -8,7 +8,7 @@
 * @n: the unsigned int number
 * Return: the number of characters printed
 */
-int print_binary(unsigned int n)
+int print_binary(unsigned int n, char *buffer)
 {
 	unsigned int nCopy = n, digitCount = 0, digitCountCopy;
 	char *binary;
@@ -22,10 +22,7 @@ int print_binary(unsigned int n)
 	/* allocate an array to put 0/1 in it */
 	binary = malloc(sizeof(*binary) * digitCount + 1);
 	if (binary == NULL)
-	{
-		print_string("Failed to allocate memory for binary conversion");
 		return (0);
-	}
 	binary[digitCount] = '\0';
 
 	/* fill in the binary from right to left */
@@ -35,7 +32,7 @@ int print_binary(unsigned int n)
 		n /= 2;
 	}
 
-	print_string(binary);
+	print_string(binary, buffer);
 	free(binary);
 	return (digitCount);
 }
