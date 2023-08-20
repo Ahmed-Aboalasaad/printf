@@ -42,6 +42,8 @@ int add_to_buffer(char c, char *buffer)
 	}
 	else if (size == 1024)
 		flush(buffer);
+	else
+		return (0);
 	return (1);
 }
 
@@ -64,8 +66,8 @@ int _printf(const char *format, ...)
 
 	buffer = malloc(sizeof(*buffer) * BUFFERSIZE + 1);
 	if (buffer == NULL)
-		return(-1);
-	buffer[BUFFERSIZE] = '\0';
+		return (-1);
+	buffer[0] = '\0';
 
 	va_start(args, format);
 	for (i = 0; format[i]; i++)
@@ -96,6 +98,8 @@ int _printf(const char *format, ...)
 				printed += print_octal(va_arg(args, unsigned int), buffer);
 			else if (format[i + 1] == 'x' || format[i + 1] == 'X')
 				printed += print_hex(va_arg(args, unsigned int), format[i + 1] == 'X', buffer);
+			else if (format[i + 1] == 'S')
+				printed += print_unprintable(va_arg(args, char *), buffer);
 			else
 				skip = 0;
 		}
