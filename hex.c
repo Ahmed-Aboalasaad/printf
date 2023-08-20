@@ -6,6 +6,7 @@
  *
  * @n: the unsigned int number
  * @capital: would you like to capitalize letters ?
+ * @buffer: the buffer
  * Return: number of characters printed
  */
 int print_hex(unsigned int n, char capital, char *buffer)

@@ -26,6 +26,7 @@ int int_pow(int b, int p)
  * print_int - Prints a number
  *
  * @n: the number to be printed
+ * @buffer: the buffer
  * Return: the number of digits printed
  */
 int print_int(int n, char *buffer)
@@ -97,6 +98,7 @@ unsigned int unsigned_int_pow(unsigned int b, unsigned int p)
  * print_unsigned_int - prints an unsigned integer
  *
  * @n: the unsigned integer
+ * @buffer: the buffer
  * Return: the number of digits printed
 */
 int print_unsigned_int(unsigned int n, char *buffer)

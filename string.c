@@ -4,6 +4,7 @@
  * print_string - prints a string without printf
  *
  * @s: the string
+ * @buffer: the buffer
  * Return: the number of characters printed
  */
 int print_string(char *s, char *buffer)

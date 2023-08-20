@@ -12,11 +12,7 @@
  */
 void flush(char *buffer)
 {
-	int i, size = 0;
-	
-	for (i = 0; buffer[i]; i++)
-		size++;
-	write(STDOUT_FILENO, buffer, size);
+	write(STDOUT_FILENO, buffer, 1024);
 	buffer[0] = '\0';
 }
 
@@ -31,7 +27,6 @@ int add_to_buffer(char c, char *buffer)
 {
 	int i, size = 0;
 
-	/* add to the buffer */
 	for (i = 0; buffer[i]; i++)
 		size++;
 	if (size < 1024)
@@ -42,8 +37,6 @@ int add_to_buffer(char c, char *buffer)
 	}
 	else if (size == 1024)
 		flush(buffer);
-	else
-		exit(1);
 	return (1);
 }
 
@@ -66,7 +59,7 @@ int _printf(const char *format, ...)
 
 	buffer = malloc(sizeof(*buffer) * BUFFERSIZE + 1);
 	if (buffer == NULL)
-		exit(101);
+		return(-1);
 	buffer[BUFFERSIZE] = '\0';
 
 	va_start(args, format);

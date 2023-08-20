@@ -5,6 +5,7 @@
  * print_octal - prints an unsigned int in ocatal system
  *
  * @n: the unsigned int number
+ * @buffer: the buffer
  * Return: number of digits printed
  */
 int print_octal(unsigned int n, char *buffer)

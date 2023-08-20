@@ -6,6 +6,7 @@
 * it prints negative numbers in 2's complement
 *
 * @n: the unsigned int number
+* @buffer: the buffer
 * Return: the number of characters printed
 */
 int print_binary(unsigned int n, char *buffer)
