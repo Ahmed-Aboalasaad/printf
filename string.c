@@ -32,7 +32,7 @@ int print_unprintable(char *s, char *buffer)
 	{
 		if (s[i] < 0)
 			return (0);
-		if (31 < s[i] && s[i] < 127) /* a printable character */
+		if (s[i] > 31 && s[i] < 127) /* a printable character */
 			add_to_buffer(s[i], buffer);
 		else /* unprintable */
 		{

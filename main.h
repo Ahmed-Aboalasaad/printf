@@ -15,5 +15,6 @@ int print_hex(unsigned int n, char capital, char *buffer);
 int add_to_buffer(char c, char *buffer);
 void flush(char *buffer);
 int print_unprintable(char *s, char *buffer);
+int print_address(unsigned long int p, char *buffer);
 
 #endif

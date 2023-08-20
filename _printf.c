@@ -100,6 +100,8 @@ int _printf(const char *format, ...)
 				printed += print_hex(va_arg(args, unsigned int), format[i + 1] == 'X', buffer);
 			else if (format[i + 1] == 'S')
 				printed += print_unprintable(va_arg(args, char *), buffer);
+			else if (format[i + 1] == 'p')
+				printed += print_address(va_arg(args, unsigned long int), buffer);
 			else
 				skip = 0;
 		}

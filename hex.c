@@ -15,7 +15,7 @@ int print_hex(unsigned int n, char capital, char *buffer)
 	char *hex;
 	char c = capital ? 'A' : 'a';
 
-	/* find #digits needed for binary represenation */
+	/* find #digits needed for octal represenation */
 	while (nCopy > 0)
 		nCopy /= 16, digitCount++;
 	if (n == 0)
@@ -27,7 +27,7 @@ int print_hex(unsigned int n, char capital, char *buffer)
 		return (0);
 	hex[digitCount] = '\0';
 
-	/* fill in the binary from right to left */
+	/* fill in the hex string from right to left */
 	for (digitCountCopy = digitCount; digitCountCopy > 0; digitCountCopy--)
 	{
 		/* This function differs from others number systems in this line: */

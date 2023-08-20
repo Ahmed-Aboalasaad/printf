@@ -10,8 +10,9 @@
  */
 int main(void)
 {
-	int len = _printf("%S\n", "Best\nSchool");
-	
-	printf("%d\n", len);
+	int x;
+	int len1 = printf("%p\n", &x);
+	int len2 = _printf("%p\n", &x);
+	printf("%d, %d\n", len1, len2);
 	return (0);
 }
