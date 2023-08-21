@@ -24,7 +24,7 @@ int print_string(char *s, char *buffer)
  * @buffer: the buffer
  * Return: numver of characters printed
  */
-int print_unprintable(char *s, char *buffer)
+int print_unprintable_string(char *s, char *buffer)
 {
 	unsigned long int i, printed = 0;
 
@@ -40,7 +40,7 @@ int print_unprintable(char *s, char *buffer)
 			add_to_buffer('x', buffer);
 			if (s[i] < 16)
 				add_to_buffer('0', buffer);
-			print_hex(s[i], 1, buffer);
+			print_capital_hex(s[i], buffer);
 			printed += 3;
 		}
 		printed++;

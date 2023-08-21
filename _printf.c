@@ -96,10 +96,12 @@ int _printf(const char *format, ...)
 				printed += print_unsigned_int(va_arg(args, unsigned int), buffer);
 			else if (format[i + 1] == 'o')
 				printed += print_octal(va_arg(args, unsigned int), buffer);
-			else if (format[i + 1] == 'x' || format[i + 1] == 'X')
-				printed += print_hex(va_arg(args, unsigned int), format[i + 1] == 'X', buffer);
+			else if (format[i + 1] == 'x')
+				printed += print_small_hex(va_arg(args, unsigned int), buffer);
+			else if (format[i + 1] == 'X')
+				printed += print_capital_hex(va_arg(args, unsigned int), buffer);
 			else if (format[i + 1] == 'S')
-				printed += print_unprintable(va_arg(args, char *), buffer);
+				printed += print_unprintable_string(va_arg(args, char *), buffer);
 			else if (format[i + 1] == 'p')
 				printed += print_address(va_arg(args, unsigned long int), buffer);
 			else

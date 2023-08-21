@@ -39,3 +39,29 @@ int print_hex(unsigned int n, char capital, char *buffer)
 	free(hex);
 	return (digitCount);
 }
+
+/**
+ * print_small_hex - prints lower-case hex conversion
+ *
+ * @n: the number to be converted
+ * @buffer: the buffer
+ * Return: #characters printed
+ */
+int print_small_hex(unsigned int n, char *buffer)
+{
+	return (print_hex(n, 0, buffer));
+}
+
+/**
+ * print_capital_hex - prints upper-case hex conversion
+ *
+ * @n: the number to be converted
+ * @buffer: the buffer
+ * Return: #characters printed
+ */
+int print_capital_hex(unsigned int n, char *buffer)
+{
+	return (print_hex(n, 1, buffer));
+}
+
+
