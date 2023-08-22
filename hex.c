@@ -35,7 +35,7 @@ int print_hex(unsigned int n, char capital, char *buffer)
 		n /= 16;
 	}
 
-	print_string(hex, buffer);
+	buffer_string(hex, buffer);
 	free(hex);
 	return (digitCount);
 }
@@ -43,24 +43,28 @@ int print_hex(unsigned int n, char capital, char *buffer)
 /**
  * print_small_hex - prints lower-case hex conversion
  *
- * @n: the number to be converted
+ * @args: the arguments list given to _printf()
  * @buffer: the buffer
  * Return: #characters printed
  */
-int print_small_hex(unsigned int n, char *buffer)
+int print_small_hex(va_list args, char *buffer)
 {
+	unsigned int n = va_arg(args, unsigned int);
+
 	return (print_hex(n, 0, buffer));
 }
 
 /**
  * print_capital_hex - prints upper-case hex conversion
  *
- * @n: the number to be converted
+ * @args: the arguments list given to _printf()
  * @buffer: the buffer
  * Return: #characters printed
  */
-int print_capital_hex(unsigned int n, char *buffer)
+int print_capital_hex(va_list args, char *buffer)
 {
+	unsigned int n = va_arg(args, unsigned int);
+
 	return (print_hex(n, 1, buffer));
 }
 

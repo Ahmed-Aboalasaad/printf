@@ -3,29 +3,36 @@
 /**
  * print_string - prints a string without printf
  *
- * @s: the string
+ * @args: the argument list of printf
  * @buffer: the buffer
  * Return: the number of characters printed
  */
-int print_string(char *s, char *buffer)
+int print_string(va_list args, char *buffer)
 {
 	unsigned long int i;
+	char *str = va_arg(args, char *);
 
-	for (i = 0; s[i]; i++)
-		add_to_buffer(s[i], buffer);
+	if (!str)
+	{
+		buffer_string("(null)", buffer);
+		return (6);
+	}
+	for (i = 0; str[i]; i++)
+		buffer_char(str[i], buffer);
 	return (i);
 }
 
 /**
- * print_unprintable - prints a string with the unprintable
+ * print_unprintable_string - prints a string with the unprintable
  * characters replaced with their hex represenation
  *
- * @s: the string to be printed
+ * @args: the argument list of printf
  * @buffer: the buffer
  * Return: numver of characters printed
  */
-int print_unprintable_string(char *s, char *buffer)
+int print_unprintable_string(va_list args, char *buffer)
 {
+	char *s = va_arg(args, char *);
 	unsigned long int i, printed = 0;
 
 	for (i = 0; s[i]; i++)
@@ -33,14 +40,14 @@ int print_unprintable_string(char *s, char *buffer)
 		if (s[i] < 0)
 			return (0);
 		if (s[i] > 31 && s[i] < 127) /* a printable character */
-			add_to_buffer(s[i], buffer);
+			buffer_char(s[i], buffer);
 		else /* unprintable */
 		{
-			add_to_buffer('\\', buffer);
-			add_to_buffer('x', buffer);
+			buffer_char('\\', buffer);
+			buffer_char('x', buffer);
 			if (s[i] < 16)
-				add_to_buffer('0', buffer);
-			print_capital_hex(s[i], buffer);
+				buffer_char('0', buffer);
+			print_hex(s[i], 1, buffer);
 			printed += 3;
 		}
 		printed++;

@@ -4,12 +4,13 @@
 /**
  * print_octal - prints an unsigned int in ocatal system
  *
- * @n: the unsigned int number
+ * @args: the argument list of printf
  * @buffer: the buffer
  * Return: number of digits printed
  */
-int print_octal(unsigned int n, char *buffer)
+int print_octal(va_list args, char *buffer)
 {
+	unsigned int n = va_arg(args, unsigned int);
 	unsigned int nCopy = n, digitCount = 0, digitCountCopy;
 	char *octal;
 
@@ -32,7 +33,7 @@ int print_octal(unsigned int n, char *buffer)
 		n /= 8;
 	}
 
-	print_string(octal, buffer);
+	buffer_string(octal, buffer);
 	free(octal);
 	return (digitCount);
 }

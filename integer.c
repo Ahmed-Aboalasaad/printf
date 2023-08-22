@@ -25,17 +25,17 @@ int int_pow(int b, int p)
 /**
  * print_int - Prints a number
  *
- * @n: the number to be printed
+ * @args: the arguments list given to _printf()
  * @buffer: the buffer
  * Return: the number of digits printed
  */
-int print_int(int n, char *buffer)
+int print_int(va_list args, char *buffer)
 {
+	int n = va_arg(args, int);
 	int nCopy = n, digitCount = 0, digitCountCopy, extraDigit = '#', printed = 0;
 
 	/* if n is the smallest int possible, take a digit in your pocket */
-	/* reason: when we make the number positive, it overflows */
-	if (n == INT_MIN)
+	if (n == INT_MIN) /* reason: avoiding overflow */
 	{
 		extraDigit = -1 * (n % 10);
 		n /= 10;
@@ -43,13 +43,13 @@ int print_int(int n, char *buffer)
 	/* handle the zero case */
 	if (n == 0)
 	{
-		add_to_buffer('0', buffer);
+		buffer_char('0', buffer);
 		return (1);
 	}
 	/* handle negative values */
 	if (n < 0)
 	{
-		add_to_buffer('-', buffer);
+		buffer_char('-', buffer);
 		printed++, n = -n;
 		nCopy = n;
 	}
@@ -62,12 +62,12 @@ int print_int(int n, char *buffer)
 	{
 		nCopy = n;
 		nCopy /= int_pow(10, digitCountCopy - 1);
-		add_to_buffer('0' + nCopy % 10, buffer);
+		buffer_char('0' + nCopy % 10, buffer);
 	}
 	printed += digitCount;
 	if (extraDigit != '#') /* if I saved a digit in my pocket before */
 	{
-		add_to_buffer('0' + extraDigit, buffer);
+		buffer_char('0' + extraDigit, buffer);
 		printed++;
 	}
 	return (printed);
@@ -97,18 +97,19 @@ unsigned int unsigned_int_pow(unsigned int b, unsigned int p)
 /**
  * print_unsigned_int - prints an unsigned integer
  *
- * @n: the unsigned integer
+ * @args: the arguments list given to _printf()
  * @buffer: the buffer
  * Return: the number of digits printed
 */
-int print_unsigned_int(unsigned int n, char *buffer)
+int print_unsigned_int(va_list args, char *buffer)
 {
+	unsigned int n = va_arg(args, unsigned int);
 	unsigned int nCopy = n, digitCount = 0, digitCountCopy, printed = 0;
 
 	/* handle the zero case */
 	if (n == 0)
 	{
-		add_to_buffer('0', buffer);
+		buffer_char('0', buffer);
 		return (1);
 	}
 	/* count the digits */
@@ -120,7 +121,7 @@ int print_unsigned_int(unsigned int n, char *buffer)
 	{
 		nCopy = n;
 		nCopy /= unsigned_int_pow(10, digitCountCopy - 1);
-		add_to_buffer('0' + nCopy % 10, buffer);
+		buffer_char('0' + nCopy % 10, buffer);
 	}
 	printed += digitCount;
 	return (printed);

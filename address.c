@@ -4,19 +4,20 @@
 /**
  * print_address - prints and address
  *
- * @p: the address
+ * @args: the arguments list given to _printf()
  * @buffer: the buffer
  * Return: the number of characters printed
  */
-int print_address(unsigned long int p, char *buffer)
+int print_address(va_list args, char *buffer)
 {
+	unsigned long int p = va_arg(args, unsigned long int);
 	unsigned long int pCopy = p, digitCount = 0, digitCountCopy;
 	char *address;
 
 	/* Input Validation */
 	if (p == 0)
 	{
-		print_string("(nil)", buffer);
+		buffer_string("(nil)", buffer);
 		return (5);
 	}
 
@@ -33,15 +34,15 @@ int print_address(unsigned long int p, char *buffer)
 	address[digitCount] = '\0';
 
 	/* fill in the address string from right to left */
-	add_to_buffer('0', buffer);
-	add_to_buffer('x', buffer);
+	buffer_char('0', buffer);
+	buffer_char('x', buffer);
 	for (digitCountCopy = digitCount; digitCountCopy > 0; digitCountCopy--)
 	{
 		address[digitCountCopy - 1] = p % 16 + ((p % 16 > 9) ? 'a' - 10 : '0');
 		p /= 16;
 	}
 
-	print_string(address, buffer);
+	buffer_string(address, buffer);
 	free(address);
 	return (digitCount + 2);
 }

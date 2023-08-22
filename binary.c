@@ -5,12 +5,13 @@
 * print_binary - prints the given unsigned int in binary
 * it prints negative numbers in 2's complement
 *
-* @n: the unsigned int number
+* @args: the arguments list given to _printf()
 * @buffer: the buffer
 * Return: the number of characters printed
 */
-int print_binary(unsigned int n, char *buffer)
+int print_binary(va_list args, char *buffer)
 {
+	unsigned int n = va_arg(args, unsigned int);
 	unsigned int nCopy = n, digitCount = 0, digitCountCopy;
 	char *binary;
 
@@ -33,7 +34,7 @@ int print_binary(unsigned int n, char *buffer)
 		n /= 2;
 	}
 
-	print_string(binary, buffer);
+	buffer_string(binary, buffer);
 	free(binary);
 	return (digitCount);
 }

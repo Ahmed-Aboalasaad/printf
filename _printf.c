@@ -1,50 +1,62 @@
 #include "main.h"
-#include <stdarg.h>
-#include <stdlib.h>
-#include <unistd.h>
-#include <stdio.h>
 
 /**
- * flush - print the buffer contents to the standard output
+ * get_specifier - finds the specifier after some index in
+ * the format string
  *
- * @buffer: the buffer to flush
- * Return: nothing
+ * @format: the format string
+ * @startIndex: the index from which we should start searching
+ * Return: the spcifier character, or NULL when no specifiers are found
  */
-void flush(char *buffer)
+char get_specifier(const char *format, int startIndex)
 {
-	int i, size = 0;
+	int i, j;
+	char specifiers[] = "csdib%uxXSp";
 
-	for (i = 0; buffer[i]; i++)
-		size++;
-	if (size != 0)
-		write(STDOUT_FILENO, buffer, size);
-	buffer[0] = '\0';
+	for (i = startIndex; format[i]; i++)
+		for (j = 0; specifiers[j]; j++)
+			if (format[i] == specifiers[j])
+				return (specifiers[j]);
+	return ('\0');
 }
 
-/**
- * add_to_buffer - adds a character to the buffer
- *
- * @c: the character to be added
- * @buffer: pointer to the buffer
- * Return: nothing
- */
-int add_to_buffer(char c, char *buffer)
-{
-	int i, size = 0;
 
-	for (i = 0; buffer[i]; i++)
-		size++;
-	if (size < 1024)
-	{
-		buffer[size] = c;
-		buffer[size + 1] = '\0';
-		size++;
-	}
-	else if (size == 1024)
-		flush(buffer);
-	else
-		return (0);
-	return (1);
+/**
+ * get_printer - gets the right printer function
+ *
+ * @format: the format string given to _printf()
+ * @currentIndex: the index at which the '%' was found
+ * Return: a function pointer to the printer,
+ * NULL when specifiers were found
+ */
+int (*get_printer(const char *format, int currentIndex))(va_list, char *)
+{
+	int i;
+	Mapping mappings[10] = {
+		{'s', print_string},
+		{'d', print_int},
+		{'i', print_int},
+		{'b', print_binary},
+		{'u', print_unsigned_int},
+		{'x', print_small_hex},
+		{'X', print_capital_hex},
+		{'S', print_unprintable_string},
+		{'p', print_address},
+		{'\0', NULL}
+	};
+	char c = get_specifier(format, currentIndex + 1);
+
+	/* no specifier was found*/
+	if (c == '\0')
+		return (NULL);
+
+	/* get the corresponding printer */
+	for (i = 0; mappings[i].printer; i++)
+		if (c == mappings[i].type)
+			return (mappings[i].printer);
+
+	/* reaching here means a problem happened (recheck your mappings) */
+	return (NULL);
 }
 
 /**
@@ -56,19 +68,20 @@ int add_to_buffer(char c, char *buffer)
 int _printf(const char *format, ...)
 {
 	va_list args;
-	int skip = 0;
-	unsigned long int i, printed = 0;
+	unsigned long int i, skip = 0, printed = 0;
 	char *buffer;
+	int (*printer)(va_list, char *);
 
 	/* Input Validation */
 	if (format == NULL)
 		return (-1);
-
+	/* Make the local buffer */
 	buffer = malloc(sizeof(*buffer) * BUFFERSIZE + 1);
 	if (buffer == NULL)
 		return (-1);
 	buffer[0] = '\0';
 
+	/* Parse the format */
 	va_start(args, format);
 	for (i = 0; format[i]; i++)
 	{
@@ -81,37 +94,16 @@ int _printf(const char *format, ...)
 		if (format[i] == '%')
 		{
 			skip = 1;
-			if (format[i + 1] == 'c') /* character placeholder */
-				printed += add_to_buffer(va_arg(args, int), buffer);
-			else if (format[i + 1] == 's') /* string placeholder */
-				printed += print_string(va_arg(args, char*), buffer);
-			/* integer placeholder */
-			else if (format[i + 1] == 'd' || format[i + 1] == 'i')
-				printed += print_int(va_arg(args, int), buffer);
-			else if (format[i + 1] == 'b') /* binary conversion */
-				printed += print_binary(va_arg(args, unsigned int), buffer);
-			else if (format[i + 1] == '%') /* a percentage character */
-				printed += add_to_buffer('%', buffer);
-			else if (format[i + 1] == 'u')
-				printed += print_unsigned_int(va_arg(args, unsigned int), buffer);
-			else if (format[i + 1] == 'o')
-				printed += print_octal(va_arg(args, unsigned int), buffer);
-			else if (format[i + 1] == 'x')
-				printed += print_small_hex(va_arg(args, unsigned int), buffer);
-			else if (format[i + 1] == 'X')
-				printed += print_capital_hex(va_arg(args, unsigned int), buffer);
-			else if (format[i + 1] == 'S')
-				printed += print_unprintable_string(va_arg(args, char *), buffer);
-			else if (format[i + 1] == 'p')
-				printed += print_address(va_arg(args, unsigned long int), buffer);
-			else
-				skip = 0;
+			printer = get_printer(format, i);
+			if (!printer)
+				return (0);
+
+			printed += printer(args, buffer);
 		}
 		else /* non-percentage character */
-			printed += add_to_buffer(format[i], buffer);
+			printed += buffer_char(format[i], buffer);
 	}
 	va_end(args);
-
 	flush(buffer);
 	free(buffer);
 	return (printed);
