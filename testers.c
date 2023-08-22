@@ -61,3 +61,22 @@ void string_tester(void)
 	printf("\n");
 	printf("%d, %d\n\n-----\n", len1 - 1, len2);
 }
+
+/**
+ * set_flags_tester - test cases for set_flags()
+ *
+ * Return: nothing
+ */
+void set_flags_tester(void)
+{
+	int i;
+	Flags my_flags = DEFAULT_FLAGS;
+	char *format = "+#";
+	set_flags(&my_flags, format, 0);
+
+	printf("Flags:\n");
+	printf("plus: %c\n", my_flags.plus + '0');
+	printf("minus: %c\n", my_flags.minus + '0');
+	printf("space: %c\n", my_flags.space + '0');
+	printf("hash: %c\n", my_flags.hash + '0');
+}

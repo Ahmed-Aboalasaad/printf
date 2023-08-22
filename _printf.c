@@ -11,7 +11,7 @@
 char get_specifier(const char *format, int startIndex)
 {
 	int i, j;
-	char specifiers[] = "csdib%uxXSp";
+	char specifiers[] = "sdibuxXSp";
 
 	for (i = startIndex; format[i]; i++)
 		for (j = 0; specifiers[j]; j++)
@@ -19,7 +19,6 @@ char get_specifier(const char *format, int startIndex)
 				return (specifiers[j]);
 	return ('\0');
 }
-
 
 /**
  * get_printer - gets the right printer function
@@ -60,6 +59,33 @@ int (*get_printer(const char *format, int currentIndex))(va_list, char *)
 }
 
 /**
+ * set_flags - sets the flags for depending on the specifier
+ *
+ * @flags: the flags object to be set
+ * Return: the set flags object
+ */
+void set_flags(Flags *flags, const char *format, int currentIndex)
+{
+	char known_flags[] = "+- #";
+	int i, j;
+	
+	/* set flags to 1 (if any) till you find a non-flag character */
+	for (i = 0; format[i]; i++)
+	{
+		if (format[i] == '+')
+			flags->plus = 1;
+		else if (format[i] == '-')
+			flags->minus = 1;
+		else if (format[i] == ' ')
+			flags->space = 1;
+		else if (format[i] == '#')
+			flags->hash = 1;
+		else
+			break;
+	}
+}
+
+/**
  * _printf - prints a formatted string
  *
  * @format: the formatter string
@@ -71,6 +97,7 @@ int _printf(const char *format, ...)
 	unsigned long int i, skip = 0, printed = 0;
 	char *buffer;
 	int (*printer)(va_list, char *);
+	Flags flags = DEFAULT_FLAGS;
 
 	/* Input Validation */
 	if (format == NULL)
@@ -94,6 +121,7 @@ int _printf(const char *format, ...)
 		if (format[i] == '%')
 		{
 			skip = 1;
+			set_flags(&flags, format, i);
 			printer = get_printer(format, i);
 			if (!printer)
 				return (0);

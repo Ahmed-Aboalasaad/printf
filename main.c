@@ -10,8 +10,7 @@
  */
 int main(void)
 {
-	int_tester();
-	string_tester();
+	
 
 	return (0);
 }

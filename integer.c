@@ -29,10 +29,26 @@ int int_pow(int b, int p)
  * @buffer: the buffer
  * Return: the number of digits printed
  */
-int print_int(va_list args, char *buffer)
+int print_int(va_list args, char *buffer, Flags *flags)
 {
 	int n = va_arg(args, int);
 	int nCopy = n, digitCount = 0, digitCountCopy, extraDigit = '#', printed = 0;
+	char *reversed;
+
+	/* Check for Flags */
+	if (n >= 0)
+	{
+		if (flags->plus)
+		{
+			buffer_char('+', buffer);
+			printed++;
+		}
+		else if (flags->space)
+		{
+			buffer_char(' ', buffer);
+			printed++;
+		}
+	}
 
 	/* if n is the smallest int possible, take a digit in your pocket */
 	if (n == INT_MIN) /* reason: avoiding overflow */
@@ -44,7 +60,7 @@ int print_int(va_list args, char *buffer)
 	if (n == 0)
 	{
 		buffer_char('0', buffer);
-		return (1);
+		return (++printed);
 	}
 	/* handle negative values */
 	if (n < 0)
@@ -53,9 +69,17 @@ int print_int(va_list args, char *buffer)
 		printed++, n = -n;
 		nCopy = n;
 	}
+
 	/* count the digits */
 	for (; nCopy > 0; digitCount++)
 		nCopy /= 10;
+	/* fill in the reversed string */
+	reversed = malloc(sizeof(*reversed) * digitCount + 1);
+	reversed[digitCount] = '\0';
+
+
+
+	
 	/* print the number (the heart of this function) */
 	digitCountCopy = digitCount;
 	for (; digitCountCopy > 0; digitCountCopy--)
