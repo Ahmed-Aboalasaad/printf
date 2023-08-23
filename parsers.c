@@ -29,7 +29,7 @@ char get_specifier(const char *format, int startIndex)
 {
 	int i, j, allowed = 0;
 	char specifiers[] = SPECIFIERS;
-	char allowed_chars[] = "+ -#csdibuxXSp";
+	char allowed_chars[] = SPECIFIERS_AND_FLAGS;
 
 	for (i = startIndex; format[i]; i++, allowed = 0)
 	{
@@ -59,6 +59,11 @@ char get_specifier(const char *format, int startIndex)
  * @format: the format string of _printf()
  * @currentIndex: the index at wich a '%' was found
  * Return: #characters _printf should increment its index
+ * -1: a '%' was found after the '%'
+ * 1: when we want to print the % we found and there is no conversions to do
+ * 2: a specifier was found right after the '%'
+ * more: depending on the number of valid flags that was put and
+ * followed by a specifier
  */
 int set_flags(Flags *flags, const char *format, int currentIndex)
 {
@@ -81,7 +86,7 @@ int set_flags(Flags *flags, const char *format, int currentIndex)
 		else
 		{
 			if (format[i] == '%')
-				return (2);
+				return (-1);
 			if (is_specifier(format[i]))
 				return (--proceed);
 			break;

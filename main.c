@@ -10,11 +10,8 @@
  */
 int main(void)
 {
-	int len1, len2;
-
-	len1 = printf("%c\n", 'H');
-	len2 = _printf("%c\n", 'H');
-	printf("%d, %d\n", len1, len2);
+	char_tester();
+	percent_tester();
 
 	return (0);
 }

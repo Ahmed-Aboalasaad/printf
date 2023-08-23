@@ -6,11 +6,14 @@
  * @args: the argument list of _printf()
  * it's not used but we need it (dont' remove it)
  * @buffer: the buffer
+ * @flags: unused paramter that was put here to be able
+ * to make a generic pointer to printers (don't remove)
  * Return: always 1
  */
 int print_char(va_list args, char *buffer, Flags *flags)
 {
-	return (buffer_char(va_arg(args, char), buffer));
+	(void)flags;
+	return (buffer_char(va_arg(args, int), buffer));
 }
 
 /**

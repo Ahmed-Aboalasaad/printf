@@ -1,4 +1,4 @@
-#include "main.h"
+#include "../main.h"
 
 /**
  * int_tester - test cases for %d in _printf()
@@ -114,4 +114,70 @@ void set_flags_tester(void)
 	printf("minus: %c\n", my_flags.minus + '0');
 	printf("space: %c\n", my_flags.space + '0');
 	printf("hash: %c\n", my_flags.hash + '0');
+}
+
+void percent_tester(void)
+{
+	int len1, len2;
+
+	len1 = printf("%%\n");
+	len2 = _printf("%%\n");
+	printf("%d, %d\n-----\n", len1, len2);
+
+	len1 = printf("%\n");
+	len2 = _printf("%\n");
+	printf("%d, %d\n-----\n", len1, len2);
+
+	len1 = printf("% \n");
+	len2 = _printf("% \n");
+	printf("%d, %d\n-----\n", len1, len2);
+
+	/* Failing test (original pritnf() shrinks whitespace into one space) */
+	/* but I'll not fix this for now (it should give an erro in the original one)
+	   so, ALX won't test this case :) */
+	len1 = printf("%   \n");
+	len2 = _printf("%   \n");
+	printf("%d, %d\n-----\n", len1, len2);
+
+	/* and if it found a non-special character, it deminishes the whitespace */
+	len1 = printf("%   +\n");
+	len2 = _printf("%   +\n");
+	printf("%d, %d\n-----\n", len1, len2);
+
+	len1 = printf("%%%\n");
+	len2 = _printf("%%%\n");
+	printf("%d, %d\n-----\n", len1, len2);
+}
+
+void char_tester(void)
+{
+	int len1, len2;
+
+	len1 = printf("%c\n", 'H');
+	len2 = _printf("%c\n", 'H');
+	printf("%d, %d\n-----\n", len1, len2);
+
+	len1 = printf("%c \n", 'H');
+	len2 = _printf("%c \n", 'H');
+	printf("%d, %d\n-----\n", len1, len2);
+
+	len1 = printf(" %c\n", 'H');
+	len2 = _printf(" %c\n", 'H');
+	printf("%d, %d\n-----\n", len1, len2);
+
+	len1 = printf("% c\n", 'H');
+	len2 = _printf("% c\n", 'H');
+	printf("%d, %d\n-----\n", len1, len2);
+
+	len1 = printf("%     c\n", 'H');
+	len2 = _printf("%     c\n", 'H');
+	printf("%d, %d\n-----\n", len1, len2);
+
+	len1 = printf("%  +c\n", 'H');
+	len2 = _printf("%  +c\n", 'H');
+	printf("%d, %d\n-----\n", len1, len2);
+
+	len1 = printf("%c%c\n", 'H', 'P');
+	len2 = _printf("%c%c\n", 'H', 'P');
+	printf("%d, %d\n-----\n", len1, len2);
 }

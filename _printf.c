@@ -68,20 +68,13 @@ int _printf(const char *format, ...)
 		if (format[i] == '%')
 		{
 			proceed = set_flags(&flags, format, i);
-			if (proceed == 1)
+			if (proceed == -1 || proceed == 1)
 			{
 				printed += buffer_char(format[i], buffer);
-				continue;
-			}
-			else if (format[i + 1] == '%')
-			{
-				printed += buffer_char('%', buffer);
-				proceed = 2;
+				proceed = (proceed == -1) ? 2 : 1;
 				continue;
 			}
 			printer = get_printer(format, i);
-			if (!printer)
-				return (0);
 			printed += printer(args, buffer, &flags);
 		}
 		else
