@@ -10,7 +10,5 @@
  */
 int main(void)
 {
-	string_tester();
-
 	return (0);
 }
