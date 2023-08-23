@@ -9,7 +9,7 @@ void int_tester(void)
 {
 	int len1, len2;
 
-	printf("=== INT Tests ===\n\n");
+	printf("==== INT Tests ====\n\n");
 
 	len1 = printf("%d\n", 150);
 	len2 = _printf("%d\n", 150);
@@ -30,6 +30,28 @@ void int_tester(void)
 	len1 = printf("%d\n", -9856);
 	len2 = _printf("%d\n", -9856);
 	printf("%d, %d\n-----\n", len1, len2);
+
+	printf("\n==== INT Tests with Flags ====\n\n");
+
+	len1 = printf("% d\n", INT_MAX);
+	len2 = _printf("% d\n", INT_MAX);
+	printf("%d, %d\n-----\n", len1, len2);
+
+	len1 = printf("% d\n", -9856);
+	len2 = _printf("% d\n", -9856);
+	printf("%d, %d\n-----\n", len1, len2);
+
+	len1 = printf("% d\n", 0);
+	len2 = _printf("% d\n", 0);
+	printf("%d, %d\n-----\n", len1, len2);
+
+	len1 = printf("% +d\n", 0);
+	len2 = _printf("% +d\n", 0);
+	printf("%d, %d\n-----\n", len1, len2);
+
+	len1 = printf("% +d\n", -9856);
+	len2 = _printf("% +d\n", -9856);
+	printf("%d, %d\n-----\n", len1, len2);
 }
 
 /**
@@ -48,18 +70,23 @@ void string_tester(void)
 	printf("\"");
 	len2 = _printf("%s", "");
 	printf("\"\n");
-	printf("%d, %d\n\n-----\n", len1 - 3, len2);
+	printf("%d, %d\n-----\n", len1 - 3, len2);
 
 	len1 = printf("%s\n", " ");
 	len2 = _printf("%s", " ");
 	printf("\n");
-	printf("%d, %d\n\n-----\n", len1 - 1, len2);
+	printf("%d, %d\n-----\n", len1 - 1, len2);
 
 	str = NULL;
 	len1 = printf("%s\n", str);
 	len2 = _printf("%s", str);
 	printf("\n");
-	printf("%d, %d\n\n-----\n", len1 - 1, len2);
+	printf("%d, %d\n-----\n", len1 - 1, len2);
+
+	len1 = printf("%s\n", "Ahmed\nAboalesaad");
+	len2 = _printf("%s", "Ahmed\nAboalesaad");
+	printf("\n");
+	printf("%d, %d\n-----\n", len1 - 1, len2);
 }
 
 /**
@@ -71,7 +98,8 @@ void set_flags_tester(void)
 {
 	int i;
 	Flags my_flags = DEFAULT_FLAGS;
-	char *format = "+#";
+	char *format = " -#";
+	
 	set_flags(&my_flags, format, 0);
 
 	printf("Flags:\n");

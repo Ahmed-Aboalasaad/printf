@@ -45,13 +45,22 @@ int print_hex(unsigned int n, char capital, char *buffer)
  *
  * @args: the arguments list given to _printf()
  * @buffer: the buffer
+ * @flags: a Flags object indicating wich flags were arisen
  * Return: #characters printed
  */
-int print_small_hex(va_list args, char *buffer)
+int print_small_hex(va_list args, char *buffer, Flags *flags)
 {
+	int printed = 0;
 	unsigned int n = va_arg(args, unsigned int);
 
-	return (print_hex(n, 0, buffer));
+	if (flags->hash) /* Check for Flags */
+	{
+		buffer_string("0x", buffer);
+		printed += 2;
+	}
+	printed += print_hex(n, 0, buffer);
+
+	return (printed);
 }
 
 /**
@@ -59,13 +68,20 @@ int print_small_hex(va_list args, char *buffer)
  *
  * @args: the arguments list given to _printf()
  * @buffer: the buffer
+ * @flags: a Flags object indicating wich flags were arisen
  * Return: #characters printed
  */
-int print_capital_hex(va_list args, char *buffer)
+int print_capital_hex(va_list args, char *buffer, Flags *flags)
 {
+	int printed = 0;
 	unsigned int n = va_arg(args, unsigned int);
 
-	return (print_hex(n, 1, buffer));
+	if (flags->hash) /* Check for Flags */
+	{
+		buffer_string("0x", buffer);
+		printed += 2;
+	}
+	printed += print_hex(n, 1, buffer);
+
+	return (printed);
 }
-
-

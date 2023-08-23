@@ -7,10 +7,13 @@
 *
 * @args: the arguments list given to _printf()
 * @buffer: the buffer
+* @flags: unused paramter that was put here to be able
+ * to make a generic pointer to printers (don't remove)
 * Return: the number of characters printed
 */
-int print_binary(va_list args, char *buffer)
+int print_binary(va_list args, char *buffer, Flags *flags)
 {
+	(void)flags;
 	unsigned int n = va_arg(args, unsigned int);
 	unsigned int nCopy = n, digitCount = 0, digitCountCopy;
 	char *binary;

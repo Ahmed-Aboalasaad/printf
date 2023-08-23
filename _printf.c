@@ -1,34 +1,14 @@
 #include "main.h"
 
 /**
- * get_specifier - finds the specifier after some index in
- * the format string
- *
- * @format: the format string
- * @startIndex: the index from which we should start searching
- * Return: the spcifier character, or NULL when no specifiers are found
- */
-char get_specifier(const char *format, int startIndex)
-{
-	int i, j;
-	char specifiers[] = "sdibuxXSp";
-
-	for (i = startIndex; format[i]; i++)
-		for (j = 0; specifiers[j]; j++)
-			if (format[i] == specifiers[j])
-				return (specifiers[j]);
-	return ('\0');
-}
-
-/**
  * get_printer - gets the right printer function
  *
  * @format: the format string given to _printf()
- * @currentIndex: the index at which the '%' was found
+ * @index: the index at which the '%' was found
  * Return: a function pointer to the printer,
  * NULL when specifiers were found
  */
-int (*get_printer(const char *format, int currentIndex))(va_list, char *)
+int (*get_printer(const char *format, int index))(va_list, char *, Flags *)
 {
 	int i;
 	Mapping mappings[10] = {
@@ -43,7 +23,7 @@ int (*get_printer(const char *format, int currentIndex))(va_list, char *)
 		{'p', print_address},
 		{'\0', NULL}
 	};
-	char c = get_specifier(format, currentIndex + 1);
+	char c = get_specifier(format, index + 1);
 
 	/* no specifier was found*/
 	if (c == '\0')
@@ -59,33 +39,6 @@ int (*get_printer(const char *format, int currentIndex))(va_list, char *)
 }
 
 /**
- * set_flags - sets the flags for depending on the specifier
- *
- * @flags: the flags object to be set
- * Return: the set flags object
- */
-void set_flags(Flags *flags, const char *format, int currentIndex)
-{
-	char known_flags[] = "+- #";
-	int i, j;
-	
-	/* set flags to 1 (if any) till you find a non-flag character */
-	for (i = 0; format[i]; i++)
-	{
-		if (format[i] == '+')
-			flags->plus = 1;
-		else if (format[i] == '-')
-			flags->minus = 1;
-		else if (format[i] == ' ')
-			flags->space = 1;
-		else if (format[i] == '#')
-			flags->hash = 1;
-		else
-			break;
-	}
-}
-
-/**
  * _printf - prints a formatted string
  *
  * @format: the formatter string
@@ -94,10 +47,10 @@ void set_flags(Flags *flags, const char *format, int currentIndex)
 int _printf(const char *format, ...)
 {
 	va_list args;
-	unsigned long int i, skip = 0, printed = 0;
+	unsigned long int i, proceed = 0, printed = 0;
 	char *buffer;
-	int (*printer)(va_list, char *);
-	Flags flags = DEFAULT_FLAGS;
+	int (*printer)(va_list, char *, Flags *);
+	Flags flags;
 
 	/* Input Validation */
 	if (format == NULL)
@@ -110,26 +63,21 @@ int _printf(const char *format, ...)
 
 	/* Parse the format */
 	va_start(args, format);
-	for (i = 0; format[i]; i++)
+	for (i = 0, proceed = 0; format[i]; i += proceed)
 	{
-		if (skip)
-		{
-			skip = 0;
-			continue;
-		}
-
 		if (format[i] == '%')
 		{
-			skip = 1;
-			set_flags(&flags, format, i);
+			proceed = set_flags(&flags, format, i);
 			printer = get_printer(format, i);
 			if (!printer)
 				return (0);
-
-			printed += printer(args, buffer);
+			printed += printer(args, buffer, &flags);
 		}
-		else /* non-percentage character */
+		else
+		{
+			proceed = 1;
 			printed += buffer_char(format[i], buffer);
+		}
 	}
 	va_end(args);
 	flush(buffer);

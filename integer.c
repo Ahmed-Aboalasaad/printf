@@ -2,24 +2,41 @@
 #include <limits.h>
 
 /**
- * int_pow - power function
- * @b: base
- * @p: power
+ * print_prepared_int - prints a string under some conditions
+ * Description: the provided number should be a non-negative
+ * unsigned int. It doesn't check for flags, width, or precision
  *
- * Return: the base to the power
+ * @n: the number to be printed
+ * @buffer: the buffer
+ * Return: #characters printed = #digits of the number
  */
-int int_pow(int b, int p)
+int print_prepared_int(unsigned int n, char *buffer)
 {
-	int tmp = b;
+	unsigned int nCopy = n;
+	int digitCount = 0, i;
+	char *reversed;
 
-	if (p == 0)
+	if (n == 0) /* the zero corner case */
+	{
+		buffer_char('0', buffer);
 		return (1);
-	if (p == 1)
-		return (b);
-	while (p-- > 1)
-		b *= tmp;
+	}
 
-	return (b);
+	/* count the digits */
+	for (nCopy = n; nCopy > 0; nCopy /= 10)
+		digitCount++;
+
+	/* fill in a string with the digits reversed */
+	reversed = malloc(sizeof(*reversed) * digitCount + 1);
+	reversed[digitCount] = '\0';
+	for (i = 0, nCopy = n; nCopy > 0; i++, nCopy /= 10)
+		reversed[i] = (nCopy % 10) + '0';
+
+	/* then reverse it to be as expected */
+	reversed = reverse_string(reversed);
+	buffer_string(reversed, buffer);
+	free(reversed);
+	return (digitCount);
 }
 
 /**
@@ -27,16 +44,15 @@ int int_pow(int b, int p)
  *
  * @args: the arguments list given to _printf()
  * @buffer: the buffer
+ * @flags: a Flags object indicating wich flags were arisen
+ * before the specifier
  * Return: the number of digits printed
  */
 int print_int(va_list args, char *buffer, Flags *flags)
 {
-	int n = va_arg(args, int);
-	int nCopy = n, digitCount = 0, digitCountCopy, extraDigit = '#', printed = 0;
-	char *reversed;
+	int n = va_arg(args, int), extraDigit = '#', printed = 0;
 
-	/* Check for Flags */
-	if (n >= 0)
+	if (n >= 0) /* Check for Flags */
 	{
 		if (flags->plus)
 		{
@@ -49,73 +65,19 @@ int print_int(va_list args, char *buffer, Flags *flags)
 			printed++;
 		}
 	}
-
-	/* if n is the smallest int possible, take a digit in your pocket */
-	if (n == INT_MIN) /* reason: avoiding overflow */
-	{
-		extraDigit = -1 * (n % 10);
-		n /= 10;
-	}
-	/* handle the zero case */
-	if (n == 0)
-	{
-		buffer_char('0', buffer);
-		return (++printed);
-	}
-	/* handle negative values */
-	if (n < 0)
+	if (n == INT_MIN) /* avoiding overflow (take a digit in your pocket)*/
+		extraDigit = -1 * (n % 10), n /= 10;
+	if (n < 0) /* for negative values */
 	{
 		buffer_char('-', buffer);
 		printed++, n = -n;
-		nCopy = n;
 	}
 
-	/* count the digits */
-	for (; nCopy > 0; digitCount++)
-		nCopy /= 10;
-	/* fill in the reversed string */
-	reversed = malloc(sizeof(*reversed) * digitCount + 1);
-	reversed[digitCount] = '\0';
+	printed += print_prepared_int(n, buffer);
 
-
-
-	
-	/* print the number (the heart of this function) */
-	digitCountCopy = digitCount;
-	for (; digitCountCopy > 0; digitCountCopy--)
-	{
-		nCopy = n;
-		nCopy /= int_pow(10, digitCountCopy - 1);
-		buffer_char('0' + nCopy % 10, buffer);
-	}
-	printed += digitCount;
 	if (extraDigit != '#') /* if I saved a digit in my pocket before */
-	{
-		buffer_char('0' + extraDigit, buffer);
-		printed++;
-	}
+		printed += buffer_char('0' + extraDigit, buffer);
 	return (printed);
-}
-
-/**
- * unsigned_int_pow - power function
- * @b: base
- * @p: power
- *
- * Return: the base to the power
- */
-unsigned int unsigned_int_pow(unsigned int b, unsigned int p)
-{
-	int tmp = b;
-
-	if (p == 0)
-		return (1);
-	if (p == 1)
-		return (b);
-	while (p-- > 1)
-		b *= tmp;
-
-	return (b);
 }
 
 /**
@@ -123,30 +85,14 @@ unsigned int unsigned_int_pow(unsigned int b, unsigned int p)
  *
  * @args: the arguments list given to _printf()
  * @buffer: the buffer
+ * @flags: unused paramter that was put here to be able
+ * to make a generic pointer to printers (don't remove)
  * Return: the number of digits printed
 */
-int print_unsigned_int(va_list args, char *buffer)
+int print_unsigned_int(va_list args, char *buffer, Flags *flags)
 {
+	(void)flags;
 	unsigned int n = va_arg(args, unsigned int);
-	unsigned int nCopy = n, digitCount = 0, digitCountCopy, printed = 0;
 
-	/* handle the zero case */
-	if (n == 0)
-	{
-		buffer_char('0', buffer);
-		return (1);
-	}
-	/* count the digits */
-	for (; nCopy > 0; digitCount++)
-		nCopy /= 10;
-	/* print the number (the heart of this function) */
-	digitCountCopy = digitCount;
-	for (; digitCountCopy > 0; digitCountCopy--)
-	{
-		nCopy = n;
-		nCopy /= unsigned_int_pow(10, digitCountCopy - 1);
-		buffer_char('0' + nCopy % 10, buffer);
-	}
-	printed += digitCount;
-	return (printed);
+	return (print_prepared_int(n, buffer));
 }

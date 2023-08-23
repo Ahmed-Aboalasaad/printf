@@ -6,10 +6,13 @@
  *
  * @args: the arguments list given to _printf()
  * @buffer: the buffer
+ * @flags: unused paramter that was put here to be able
+ * to make a generic pointer to printers (don't remove)
  * Return: the number of characters printed
  */
-int print_address(va_list args, char *buffer)
+int print_address(va_list args, char *buffer, Flags *flags)
 {
+	(void)flags;
 	unsigned long int p = va_arg(args, unsigned long int);
 	unsigned long int pCopy = p, digitCount = 0, digitCountCopy;
 	char *address;

@@ -5,10 +5,13 @@
  *
  * @args: the argument list of printf
  * @buffer: the buffer
+ * @flags: unused paramter that was put here to be able
+ * to make a generic pointer to printers (don't remove)
  * Return: the number of characters printed
  */
-int print_string(va_list args, char *buffer)
+int print_string(va_list args, char *buffer, Flags *flags)
 {
+	(void)flags;
 	unsigned long int i;
 	char *str = va_arg(args, char *);
 
@@ -28,10 +31,13 @@ int print_string(va_list args, char *buffer)
  *
  * @args: the argument list of printf
  * @buffer: the buffer
+ * @flags: unused paramter that was put here to be able
+ * to make a generic pointer to printers (don't remove)
  * Return: numver of characters printed
  */
-int print_unprintable_string(va_list args, char *buffer)
+int print_unprintable_string(va_list args, char *buffer, Flags *flags)
 {
+	(void)flags;
 	char *s = va_arg(args, char *);
 	unsigned long int i, printed = 0;
 
@@ -53,4 +59,28 @@ int print_unprintable_string(va_list args, char *buffer)
 		printed++;
 	}
 	return (printed);
+}
+
+/**
+ * reverse_string - reverses a string
+ *
+ * @str: the string to be reversed
+ * Return: nothing
+ */
+char *reverse_string(char *str)
+{
+	int i, size = 0;
+	char *reversed;
+
+	for (i = 0; str[i]; i++)
+		size++;
+	reversed = malloc(sizeof(*reversed) * size + 1);
+	if (!reversed)
+		return (NULL);
+	reversed[size] = '\0';
+
+	for (i = 0; i < size; i++)
+		reversed[i] = str[size - i - 1];
+	free(str);
+	return (reversed);
 }

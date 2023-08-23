@@ -8,6 +8,22 @@
 
 #define BUFFERSIZE 1024
 #define DEFAULT_FLAGS {0, 0, 0, 0}
+#define SPECIFIERS "sdibuxXSp"
+
+/**
+ * struct Flags - holds a combination of specifier flags
+ *
+ * @plus: the '+' flag
+ * @minus: the '-' flag
+ * @space: the ' ' flag
+ * @hash: the '#' flag
+ * Description: they indicate which flags where provided
+ * in the format string (for one '%' presence)
+ */
+typedef struct Flags
+{
+	char plus, minus, space, hash;
+} Flags;
 
 /**
  * struct Mapping - maps every specifier with its corresponding printer
@@ -20,16 +36,11 @@
 typedef struct Mapping
 {
 	char type;
-	int (*printer)(va_list args, char *buffer);
+	int (*printer)(va_list args, char *buffer, Flags *);
 } Mapping;
 
-typedef struct Flags
-{
-	char plus, minus, space, hash;
-} Flags;
-
 /* Flags */
-void set_flags(Flags *flags, const char *format, int currentIndex);
+int set_flags(Flags *flags, const char *format, int currentIndex);
 
 /* Buffer */
 void flush(char *buffer);
@@ -38,19 +49,27 @@ int buffer_string(char *str, char *buffer);
 
 /* Printers */
 int _printf(const char *format, ...);
-int print_string(va_list args, char *buffer);
+int print_string(va_list args, char *buffer, Flags *flags);
 int print_int(va_list args, char *buffer, Flags *flags);
-int print_binary(va_list args, char *buffer);
-int print_unsigned_int(va_list args, char *buffer);
-int print_octal(va_list args, char *buffer);
+int print_binary(va_list args, char *buffer, Flags *flags);
+int print_unsigned_int(va_list args, char *buffer, Flags *flags);
+int print_octal(va_list args, char *buffer, Flags *flags);
 int print_hex(unsigned int n, char capital, char *buffer);
-int print_small_hex(va_list args, char *buffer);
-int print_capital_hex(va_list args, char *buffer);
-int print_unprintable_string(va_list args, char *buffer);
-int print_address(va_list args, char *buffer);
+int print_small_hex(va_list args, char *buffer, Flags *flags);
+int print_capital_hex(va_list args, char *buffer, Flags *flags);
+int print_unprintable_string(va_list args, char *buffer, Flags *flags);
+int print_address(va_list args, char *buffer, Flags *flags);
 
 /* Testers */
 void string_tester(void);
 void int_tester(void);
+void set_flags_tester(void);
+
+/* Parsers */
+char get_specifier(const char *format, int startIndex);
+int set_flags(Flags *flags, const char *format, int currentIndex);
+
+/* Other */
+char *reverse_string(char *str);
 
 #endif
