@@ -10,8 +10,5 @@
  */
 int main(void)
 {
-	char_tester();
-	percent_tester();
-
 	return (0);
 }

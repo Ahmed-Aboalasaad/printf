@@ -48,7 +48,7 @@ int (*get_printer(const char *format, int index))(va_list, char *, Flags *)
 int _printf(const char *format, ...)
 {
 	va_list args;
-	unsigned long int i, proceed = 0, printed = 0;
+	int i, proceed = 0, printed = 0;
 	char *buffer;
 	int (*printer)(va_list, char *, Flags *);
 	Flags flags;
