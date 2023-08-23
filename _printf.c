@@ -60,7 +60,6 @@ int _printf(const char *format, ...)
 	if (buffer == NULL)
 		return (-1);
 	buffer[0] = '\0';
-
 	/* Parse the format */
 	va_start(args, format);
 	for (i = 0, proceed = 0; format[i]; i += proceed)
@@ -68,16 +67,18 @@ int _printf(const char *format, ...)
 		if (format[i] == '%')
 		{
 			proceed = set_flags(&flags, format, i);
+			if (proceed < 3)
+			{
+				printed += buffer_char(format[i], buffer);
+				continue;
+			}
 			printer = get_printer(format, i);
 			if (!printer)
 				return (0);
 			printed += printer(args, buffer, &flags);
 		}
 		else
-		{
-			proceed = 1;
-			printed += buffer_char(format[i], buffer);
-		}
+			proceed = 1, printed += buffer_char(format[i], buffer);
 	}
 	va_end(args);
 	flush(buffer);

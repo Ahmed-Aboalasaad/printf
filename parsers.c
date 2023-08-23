@@ -80,6 +80,8 @@ int set_flags(Flags *flags, const char *format, int currentIndex)
 			flags->hash = 1;
 		else
 		{
+			if (format[i] == '%')
+				return (2);
 			if (is_specifier(format[i]))
 				return (--proceed);
 			break;

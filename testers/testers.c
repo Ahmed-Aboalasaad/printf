@@ -61,7 +61,7 @@ void int_tester(void)
  */
 void string_tester(void)
 {
-	int len1, len2;
+	int len1, len2, i;
 	char *str;
 
 	printf("=== String Tests ===\n\n");
@@ -87,6 +87,14 @@ void string_tester(void)
 	len2 = _printf("%s", "Ahmed\nAboalesaad");
 	printf("\n");
 	printf("%d, %d\n-----\n", len1 - 1, len2);
+
+	str = malloc(2);
+	str[0] = 27, str[1] = 0;
+	len1 = printf("%s\n", str);
+	len2 = _printf("%s", str);
+	printf("\n");
+	printf("%d, %d\n-----\n", len1 - 1, len2);
+	free(str);
 }
 
 /**
@@ -96,10 +104,9 @@ void string_tester(void)
  */
 void set_flags_tester(void)
 {
-	int i;
 	Flags my_flags = DEFAULT_FLAGS;
 	char *format = " -#";
-	
+
 	set_flags(&my_flags, format, 0);
 
 	printf("Flags:\n");

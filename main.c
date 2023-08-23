@@ -10,5 +10,11 @@
  */
 int main(void)
 {
+	int len1, len2;
+
+	len1 = printf("% d\n", 15);
+	len2 = _printf("% d\n", 15);
+	printf("%d, %d\n", len1, len2);
+
 	return (0);
 }
