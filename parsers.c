@@ -29,7 +29,7 @@ char get_specifier(const char *format, int startIndex)
 {
 	int i, j, allowed = 0;
 	char specifiers[] = SPECIFIERS;
-	char allowed_chars[] = "+ -#sdibuxXSp";
+	char allowed_chars[] = "+ -#csdibuxXSp";
 
 	for (i = startIndex; format[i]; i++, allowed = 0)
 	{

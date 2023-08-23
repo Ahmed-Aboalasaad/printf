@@ -8,7 +8,7 @@
 
 #define BUFFERSIZE 1024
 #define DEFAULT_FLAGS {0, 0, 0, 0}
-#define SPECIFIERS "sdibuxXSp"
+#define SPECIFIERS "csdibuxXSp"
 
 /**
  * struct Flags - holds a combination of specifier flags
@@ -49,6 +49,7 @@ int buffer_string(char *str, char *buffer);
 
 /* Printers */
 int _printf(const char *format, ...);
+int print_char(va_list args,char *buffer, Flags *flags);
 int print_string(va_list args, char *buffer, Flags *flags);
 int print_int(va_list args, char *buffer, Flags *flags);
 int print_binary(va_list args, char *buffer, Flags *flags);
@@ -68,6 +69,7 @@ void set_flags_tester(void);
 /* Parsers */
 char get_specifier(const char *format, int startIndex);
 int set_flags(Flags *flags, const char *format, int currentIndex);
+char is_specifier(char c);
 
 /* Other */
 char *reverse_string(char *str);

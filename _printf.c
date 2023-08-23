@@ -11,7 +11,8 @@
 int (*get_printer(const char *format, int index))(va_list, char *, Flags *)
 {
 	int i;
-	Mapping mappings[10] = {
+	Mapping mappings[11] = {
+		{'c', print_char},
 		{'s', print_string},
 		{'d', print_int},
 		{'i', print_int},
@@ -67,9 +68,15 @@ int _printf(const char *format, ...)
 		if (format[i] == '%')
 		{
 			proceed = set_flags(&flags, format, i);
-			if (proceed < 3)
+			if (proceed == 1)
 			{
 				printed += buffer_char(format[i], buffer);
+				continue;
+			}
+			else if (format[i + 1] == '%')
+			{
+				printed += buffer_char('%', buffer);
+				proceed = 2;
 				continue;
 			}
 			printer = get_printer(format, i);

@@ -1,6 +1,19 @@
 #include "main.h"
 
 /**
+ * print_char - prints a character
+ *
+ * @args: the argument list of _printf()
+ * it's not used but we need it (dont' remove it)
+ * @buffer: the buffer
+ * Return: always 1
+ */
+int print_char(va_list args, char *buffer, Flags *flags)
+{
+	return (buffer_char(va_arg(args, char), buffer));
+}
+
+/**
  * print_string - prints a string without printf
  *
  * @args: the argument list of printf
