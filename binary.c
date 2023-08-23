@@ -1,5 +1,4 @@
 #include "main.h"
-#include <stdlib.h>
 
 /**
 * print_binary - prints the given unsigned int in binary
@@ -13,11 +12,11 @@
 */
 int print_binary(va_list args, char *buffer, Flags *flags)
 {
-	(void)flags;
-	unsigned int n = va_arg(args, unsigned int);
-	unsigned int nCopy = n, digitCount = 0, digitCountCopy;
+	unsigned int n, nCopy, digitCount, digitCountCopy;
 	char *binary;
 
+	(void)flags;
+	n = va_arg(args, unsigned int), nCopy = n, digitCount = 0;
 	/* find #digits needed for binary represenation */
 	while (nCopy > 0)
 		nCopy /= 2, digitCount++;

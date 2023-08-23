@@ -12,11 +12,11 @@
  */
 int print_address(va_list args, char *buffer, Flags *flags)
 {
-	(void)flags;
-	unsigned long int p = va_arg(args, unsigned long int);
-	unsigned long int pCopy = p, digitCount = 0, digitCountCopy;
+	unsigned long int p, pCopy, digitCount, digitCountCopy;
 	char *address;
 
+	(void)flags;
+	p = va_arg(args, unsigned long int), pCopy = p, digitCount = 0;
 	/* Input Validation */
 	if (p == 0)
 	{

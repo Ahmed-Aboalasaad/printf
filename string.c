@@ -11,10 +11,11 @@
  */
 int print_string(va_list args, char *buffer, Flags *flags)
 {
-	(void)flags;
 	unsigned long int i;
-	char *str = va_arg(args, char *);
+	char *str;
 
+	(void)flags;
+	str = va_arg(args, char *);
 	if (!str)
 	{
 		buffer_string("(null)", buffer);
@@ -37,10 +38,11 @@ int print_string(va_list args, char *buffer, Flags *flags)
  */
 int print_unprintable_string(va_list args, char *buffer, Flags *flags)
 {
-	(void)flags;
-	char *s = va_arg(args, char *);
+	char *s;
 	unsigned long int i, printed = 0;
 
+	(void)flags;
+	s = va_arg(args, char *);
 	for (i = 0; s[i]; i++)
 	{
 		if (s[i] < 0)

@@ -91,8 +91,9 @@ int print_int(va_list args, char *buffer, Flags *flags)
 */
 int print_unsigned_int(va_list args, char *buffer, Flags *flags)
 {
-	(void)flags;
-	unsigned int n = va_arg(args, unsigned int);
+	unsigned int n;
 
+	(void)flags;
+	n = va_arg(args, unsigned int);
 	return (print_prepared_int(n, buffer));
 }
