@@ -36,7 +36,10 @@ int buffer_char(char c, char *buffer)
 		buffer[buferSize + 1] = '\0';
 	}
 	else if (buferSize == BUFFERSIZE)
+	{
 		flush(buffer);
+		buffer_char(c, buffer);
+	}
 	return (1);
 }
 
