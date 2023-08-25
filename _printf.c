@@ -67,7 +67,7 @@ int _printf(const char *format, ...)
 	{
 		if (format[i] == '%')
 		{
-			if (format[i + 1] == '%')
+			if (format[1] == '%')
 			{
 				printed += buffer_char('%', buffer);
 			}
