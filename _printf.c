@@ -69,7 +69,7 @@ int _printf(const char *format, ...)
 		{
 			if (format[1] == '%')
 			{
-				printed += buffer_char('%', buffer);
+				printed += buffer_char('%' + '0', buffer);
 			}
 			proceed = set_flags(&flags, format, i);
 			if (proceed == -1 || proceed == 1)
