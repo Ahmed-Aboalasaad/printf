@@ -63,6 +63,7 @@ void string_tester(void)
 {
 	int len1, len2, i;
 	char *str;
+	char *s;
 
 	printf("=== String Tests ===\n\n");
 
@@ -95,6 +96,15 @@ void string_tester(void)
 	printf("\n");
 	printf("%d, %d\n-----\n", len1 - 1, len2);
 	free(str);
+
+	/* long string */
+	s = malloc(sizeof(char) * 4000 + 1);
+	s[4000] = '\0';
+	for (i = 0; i < 4000; i++)
+		s[i] = '1';
+	len1 = printf("%s\n\n\n", s);
+	len2 = _printf("%s\n\n\n", s);
+	printf("%d, %d\n", len1, len2);
 }
 
 /**
@@ -143,6 +153,16 @@ void percent_tester(void)
 	len1 = printf("%   +\n");
 	len2 = _printf("%   +\n");
 	printf("%d, %d\n-----\n", len1, len2);
+
+
+	/* failing test: if no specifier was found after printf, it
+	should return -1 and not print anything */
+	len1 = printf("Ahmed% ");
+	printf("\n");
+	len2 = _printf("Ahmed% ");
+	printf("\n");
+	printf("%d, %d\n", len1, len2);
+
 
 	len1 = printf("%%%\n");
 	len2 = _printf("%%%\n");
