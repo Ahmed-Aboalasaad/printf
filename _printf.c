@@ -67,6 +67,10 @@ int _printf(const char *format, ...)
 	{
 		if (format[i] == '%')
 		{
+			if (format[i + 1] == '%')
+			{
+				printed += buffer_char(format[i], buffer);
+			}
 			proceed = set_flags(&flags, format, i);
 			if (proceed == -1 || proceed == 1)
 			{
